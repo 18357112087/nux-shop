@@ -1,6 +1,21 @@
 //app.js
+const app = getApp()
 App({
+  globalData:{
+    isAdmin:false,
+    userInfo:null,
+    env:'',
+    openid: '',
+    
+  },
+
+  
+  // 随机数生成函数
+  RndNum: function(){
+    return Math.random().toString(32).substr(2, 15);
+  },
   onLaunch: function () {
+    
     
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力')
@@ -17,8 +32,22 @@ App({
         // env: 'my-env-id',
         traceUser: true,
       })
+      // wx.cloud.callFunction({
+      //   name: "login",
+      //   data: {  
+      //   },
+      //    success:function(result){
+      //      console.log(result)
+      //      if(result.result.openid="oymTJ5SXBPmBj3cbxJuimG7DTYwg"){
+      //        app.globalData.isAdmin = true
+      //      }
+      //      console.log(app.globalData.isBusiness)
+      //    },
+      //    fail:function(error){console.log(error)}
+         
+      //  })
     }
 
-    this.globalData = {}
+    
   }
 })

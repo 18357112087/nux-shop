@@ -1,7 +1,21 @@
 
 import { CloudRequest } from '../utils/cloud-request.js'
 class ProductModel extends CloudRequest {
-  
+  /**
+     * 生成订单
+     * @param {*} orderData 
+     * @param {*} callBack 
+     */
+    create(productData, callBack) {
+      console.log(productData)
+      this.request({
+          url: "createProduct",
+          data: { productData: productData },
+          success: res => {
+              callBack(res)
+          }
+      })
+  }
   /**
    * 根据商品ID 获取商品信息
    * @param {*} product_id 

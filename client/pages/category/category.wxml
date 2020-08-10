@@ -15,7 +15,7 @@
       <image src='../../images/temp/category.png'></image>
     </view>
     <view class='category-name'>
-      <text>{{menuNmae}}</text>
+      <text>{{menuName}}</text>
     </view>
     <view class='product-container'>
       <block wx:for="{{products}}" wx:key="key">

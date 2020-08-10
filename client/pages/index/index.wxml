@@ -1,5 +1,5 @@
 <!-- pages/index/index.wxml -->
-<view class='container'>
+<view class='container' wx:if="!isBusiness">
   <!-- 1、轮播图 -->
   <swiper class='swiper-container' indicator-dots="{{indicatorDots}}" indicator-active-color='#fff' autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" circular="{{circular}}">
     <block wx:for="{{banners}}" wx:key="">

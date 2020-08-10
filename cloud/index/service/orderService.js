@@ -54,13 +54,36 @@ const getOrderList = (userInfo, page = 0, size = 20, order = {}) => {
     order.name = 'create_time'
     order.orderBy = 'desc'
     let options = { buyer_openid: userInfo.openId }
-    return model.query(ORDER, ORDERFIELD, options, page, size, order)
+    var a = model.query(ORDER, ORDERFIELD, options, page, size, order)
+    return a
 }
 
+/**
+ * 查询所有订单
+ * 
+ */
+const getOrderListAll = (userInfo, page = 0, size = 20, order = {}) => {
+    order.name = 'create_time'
+    order.orderBy = 'desc'
+    let options = {}
+    var a = model.query(ORDER, ORDERFIELD, options, page, size, order)
+    return a
+}
 
+/**
+ * 修改订单
+ * 
+ */
+const updateOrder = (orderData) => {
+    console.log(orderData)
+    
+    return model.update(ORDER, orderData)
+}
 
 module.exports = {
     create,
+    updateOrder,
     getOrderById,
-    getOrderList
+    getOrderList,
+    getOrderListAll
 }

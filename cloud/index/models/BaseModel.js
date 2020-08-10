@@ -77,6 +77,7 @@ const add = (model, params) => {
 const update = (model, params) => {
   // let id = params._id
   // delete params._id
+  console.log(params)
   try {
     return db.collection(model).doc(params._id)
     .update({

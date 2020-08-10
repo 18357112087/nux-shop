@@ -14,8 +14,20 @@
       </view>
     </img-btn-comp>
   </view>
+
+<navigator wx:if="{{isAdmin}}" class="item" url="../../pages/orderManage/orderManage" hover-class="navigator-hover" justify-content = 'center'>商家订单管理</navigator>
+   <view class='line'></view>
+
+ <navigator wx:if="{{isAdmin}}" class="item" url="../../pages/productManage/productManage">商品管理</navigator>
+    <view class='line'></view>
+
+  <!-- <navigator class="item" url="../../pages/address/address">地址管理</navigator> -->
+
+
+  
+
   <!-- 订单部分 -->
-  <view class='my-order-container'>
+  <view wx:if="{{!isBusiness}}"class='my-order-container'>
     <!-- 标签 -->
     <title-bar-comp title='我的订单'></title-bar-comp>
     <!-- 订单列表 -->
@@ -41,7 +53,7 @@
         </view>
         <view class="order-bottom">
           <text>实付:￥{{item.order_amount}}</text>
-          <view class="pay" data-id="{{item._id}}" bind:tap="pay">立即支付</view>
+          <view class="pay" data-id="{{item._id}}" bind:tap="pay" wx:if="{{!item.order_status}}">立即支付</view>
         </view>
       </view>
     </block>

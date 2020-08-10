@@ -1,0 +1,158 @@
+
+<!-----------------------!!!! 添加商品!!!!---------------------------->
+<view class='deleteFruit' wx:if="{{cardNum === 1}}">
+<view class='page_create'>
+<!---------- 订单信息 ------------->
+<view class="weui-cells__title">修改信息</view>
+
+<view class="weui-cells weui-cells_after-title">
+  <!-- 商品编号 -->
+  <view class="weui-cell weui-cell_input">
+    <view class="weui-cell__hd">
+      <view class="weui-label">商品编号</view>
+    </view>
+    <view class="weui-cell__bd weui-cell__ft">
+      <input class="weui-input" value="{{product_id}}" type="digit" bindinput='getProductID'/>
+    </view>
+  </view>
+  <!-- 商品名称 -->
+  <view class="weui-cell weui-cell_input">
+    <view class="weui-cell__hd">
+      <view class="weui-label" >商品名称</view>
+    </view>
+    <view class="weui-cell__bd weui-cell__ft">
+      <input class="weui-input" value="{{product_name}}" bindinput='getName'/>
+    </view>
+  </view>
+  <!-- 价格 -->
+  <view class="weui-cell weui-cell_input">
+    <view class="weui-cell__hd">
+      <view class="weui-label" >价格</view>
+    </view>
+    <view class="weui-cell__bd weui-cell__ft">
+      <input class="weui-input"  value="{{product_price}}" type="digit" bindinput='getPrice'/>
+    </view>
+  </view>
+  <!--售卖价格 -->
+  <view class="weui-cell weui-cell_input">
+    <view class="weui-cell__hd">
+      <view class="weui-label">售卖价格</view>
+    </view>
+    <view class="weui-cell__bd weui-cell__ft">
+      <input class="weui-input" value="{{product_sell_price}}" bindinput='getSellPrice'/>
+    </view>
+  </view>
+  <!--售卖价格 -->
+  <view class="weui-cell weui-cell_input">
+    <view class="weui-cell__hd">
+      <view class="weui-label">商品库存</view>
+    </view>
+    <view class="weui-cell__bd weui-cell__ft">
+      <input class="weui-input" value="{{product_stock}}" bindinput='getProductStock'/>
+    </view>
+  </view>
+  <!--类型 -->
+  <view class="weui-cell weui-cell_input">
+    <view class="weui-cell__hd">
+      <view class="weui-label">商品类型</view>
+    </view>
+    <view class="weui-cell__bd weui-cell__ft">
+    <picker  bindchange='getCategoryType' value="{{index}}" range="{{menu}}">
+    <view class="picker">
+      当前选择：{{menu[index]}}
+    </view>
+  </picker>
+    </view>
+  </view>
+  <!-- 单位 -->
+  <!-- <view class="weui-cell weui-cell_input">
+    <view class="weui-cell__hd">
+      <view class="weui-label">单位</view>
+    </view>
+    <view class="weui-cell__bd weui-cell__ft">
+      <input class="weui-input" bindinput='getUnit'/>
+    </view>
+  </view> -->
+
+</view>
+
+<!---------- 描述信息 ------------->
+<view class="weui-cells__title">描述信息</view>
+
+<view class="weui-cells weui-cells_after-title">
+  
+  <!-- 描述照片 -->
+  <view class="weui-cell weui-cell_input">
+    <view class="weui-cell__bd cell-title">描述照片</view>
+    <view class="weui-cell__ft">
+      <picker range="{{Operator_Arr}}" value="{{Operator}}" bindchange="getOperator">
+        <view class="weui-input"></view>
+      </picker>
+    </view>
+  </view>
+  <!-- 添加照片 -->
+  <view class="weui-cell">
+    <view class="weui-cell__bd">
+      <view class="weui-uploader">
+        <view class="weui-uploader__bd">
+          <view class="weui-uploader__files" id="uploaderFiles">
+          
+            <block wx:for="{{files}}" wx:key="*this">
+              <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
+              
+                <image class="weui-uploader__img" src="{{item}}" mode="aspectFill"  />
+              </view>
+            </block>
+          </view>
+          <view class="weui-uploader__input-box">
+            <view class="weui-uploader__input" bindtap="chooseImage"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 详细信息 -->
+  <view class="weui-cell">
+    <view class="weui-uploader__hd">
+      <view class="section">
+        <textarea bindblur="getInfoText" auto-height placeholder="介绍商品的详细信息" style="min-height: 250rpx;"  />
+      </view>
+    </view>
+  </view>
+
+
+</view>
+
+<!---------- 优惠信息 ------------->
+<view class="weui-cells__title">优惠信息</view>
+
+<view class="weui-cells weui-cells_after-title">
+  <!-- 今日特惠 -->
+  <view class="weui-cell weui-cell_input">
+    <view class="weui-cell__bd cell-title">今日特惠</view>
+    <view class="weui-cell__ft">
+      <picker range="{{myClass_Arr}}" value="{{myClass}}" bindchange="getMyClass">
+        <view class="weui-input">{{myClass_Arr[myClass]||'否'}}</view>
+      </picker>
+    </view>
+  </view>
+  <!-- 店主推荐 -->
+  <view class="weui-cell weui-cell_input">
+    <view class="weui-cell__bd cell-title">店主推荐</view>
+    <view class="weui-cell__ft">
+      <picker range="{{recommend_Arr}}" value="{{recommend}}" bindchange="getRecommend">
+        <view class="weui-input">{{recommend_Arr[recommend]||'否'}}</view>
+      </picker>
+    </view>
+  </view>
+</view>
+
+
+<!---------- 按钮 ------------->
+<view class="weui-btn-area">
+  <button class="weui-btn" type="primary" bindtap="addProductInfo">确认添加</button>
+</view>
+
+<!-- end -->
+</view>
+</view>

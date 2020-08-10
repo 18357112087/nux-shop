@@ -15,7 +15,7 @@
   </view>
   <!-- 基本参数 -->
   <view class='parameter-container'>
-    <text>快递:49包邮</text>
+    <text>快递:包邮</text>
     <text class='parameter-color'>剩余:{{product.product_stock}}</text>
     <text>总销量:999</text>
   </view>
@@ -27,10 +27,10 @@
     </view>
     <view class='swiper-tab-show'>
       <view class='dealer-details' wx:if="{{currentTab==0}}">
-         <text>商品详情正在更新中！</text>
+         <text>{{product.product_description}}</text>
       </view>
       <view class='format-container' wx:else>
-          <text>详情正在更新中!</text>
+          <text>规格参数正在更新中!</text>
       </view>
     </view>
   </view>

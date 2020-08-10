@@ -3,10 +3,12 @@ import { CartModel } from '../../models/CartModel.js'
 import {
   OrderModel
 } from '../../models/OrdelModel.js'
-import { ProductModel } from '../../models/productModel.js'
+import { ProductModel } from '../../models/ProductModel.js'
 let cartmodel = new CartModel()
 let productModel = new ProductModel()
 let orderModel = new OrderModel()
+const app = getApp()
+const db = wx.cloud.database()
 Page({
 
   /**
@@ -26,6 +28,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this
+    wx.getStorage({
+      key: 'address', 
+      success:function(res){
+        that.setData({
+          address:res.data
+        })
+        }
+    })
     this.data.account = options.account
     //购物车
     if (options.from == 'cart') {
@@ -128,11 +139,16 @@ Page({
       this.setData({
         address
       })
+      wx.setStorage({
+        data: address,
+        key: 'address',
+      })
     }
 
   },
   // 提交订单
   confirm: function () {
+    var that = this
     // 判断是否选择地址
     if (this.data.address.length == 0) {
       this._showToast('none', '请选择地址')
@@ -153,8 +169,25 @@ Page({
         } else {
           // 判断是否是旧订单
           if (this.data.oldOrder) {
-            this._showToast('none', '订单支付暂未开通！')
+            var totalFee = this.data.account*100
+              wx.cloud.callFunction({
+                name: "pay1",
+                data: {
+                    orderid: "" + that.data.orderId,
+                    money: parseInt(totalFee)
+                },
+                success(res) {
+                    console.log("提交成功", res.result)
+                    that.pay(res.result,that.data.orderId)
+                },
+                fail(res) {
+                    console.log("提交失败", res)
+                }
+            })
             return
+
+            // this._showToast('none', '订单支付暂未开通！')
+            // return
           }
           // 地址拼接
           let orderData = {}
@@ -179,15 +212,37 @@ Page({
                 cartmodel.delete(ids, res => { })
               }
 
-              wx.showModal({
-                title: '支付提示',
-                content: '支付暂未实现！',
+              // wx.showModal({
+              //   title: '支付提示',
+              //   content: '支付暂未实现！',
+              //   success(res) {
+              //     wx.switchTab({
+              //       url: '/pages/my/my'
+              //     })
+              //   }
+              // })
+              
+               //     订单编号返回
+              console.log(res)
+              var totalFee = orderData.account*100
+              var temp = res
+              console.log(temp.result.data._id)
+              
+              wx.cloud.callFunction({
+                name: "pay1",
+                data: {
+                    orderid: "" + temp.result.data._id,
+                    money: parseInt(totalFee)
+                },
                 success(res) {
-                  wx.switchTab({
-                    url: '/pages/my/my'
-                  })
+                    console.log("提交成功", res.result)
+                    that.pay(res.result,temp.result.data._id)
+                },
+                fail(res) {
+                    console.log("提交失败", res)
                 }
-              })
+            })
+
             }
           })
 
@@ -198,6 +253,42 @@ Page({
 
 
   },
+  //实现小程序支付
+  pay(payData,_id) {
+    //官方标准的支付方法
+    wx.requestPayment({
+        timeStamp: payData.timeStamp,
+        nonceStr: payData.nonceStr,
+        package: payData.package, //统一下单接口返回的 prepay_id 格式如：prepay_id=***
+        signType: 'MD5',
+        paySign: payData.paySign, //签名
+        success(e) {
+            console.log("支付成功", e)
+            wx.cloud.callFunction({
+              name:'update',
+              data:{
+                id:_id
+              },
+              success(res){
+                console.log(res.result)
+                wx.switchTab({url: '../my/my', })
+              },
+              fail(res){
+                console.log(res)
+                wx.switchTab({url: '../my/my', })
+              }
+            })
+  
+        },
+        fail(res) {
+            console.log("支付失败", res)
+            wx.switchTab({url: '../my/my', })
+        },
+        complete(res) {
+            console.log("支付完成", res)
+        }
+    })
+},
   // 订单详情
   productDetail: function (event) {
     let product_id = orderModel.getDataSet(event, "id")

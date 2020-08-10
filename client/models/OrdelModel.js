@@ -43,6 +43,27 @@ class OrderModel extends CloudRequest {
             }
         })
     }
+     /**
+     * 查询所有订单
+     * @param {*} callBack 
+     */
+    getOrderListAll(callBack) {
+        this.request({
+            url: "getOrderListAll",
+            success: res => {
+                callBack(res)
+            }
+        })
+    }
+    updateOrder(orderData ,callBack) {
+        this.request({
+            url: "updateOrder",
+            data: { orderData :orderData},
+            success: res => {
+                callBack(res)
+            }
+        })
+    }
 
     
 

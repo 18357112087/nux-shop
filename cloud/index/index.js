@@ -9,7 +9,7 @@ const product = require('service/productService.js')
 const order = require('service/orderService.js')
 const baseTest = require('test/models/BaseModelTest.js')
 cloud.init()
-const IMAGEPREFIX = "cloud://release-prod.7265-release-prod"
+const IMAGEPREFIX = "cloud://makeup-f2wts.6d61-makeup-f2wts-1302632494"
 
 
 // 云函数入口函数
@@ -36,7 +36,8 @@ exports.main = async (event, context) => {
   })
   // 获取最新前5商品
   app.router('getProductNew', async (ctx, next) => {
-    ctx.data = await _productItem(product.getProduct({}, 0, 4))
+   
+    ctx.data = await _productItem(product.getProduct({}, 0, 10))
     ctx.body = await returnUtil.success(ctx)
     await next()
   })
@@ -59,15 +60,21 @@ exports.main = async (event, context) => {
   })
 
   /***************************    商品信息   *****************************************/
-
-  // 获取商品信息
+  // 生成商品
+  app.router('createProduct', async (ctx, next) => {
+    //event.data.orderData,event.userInfo
+    ctx.data = await product.create(event.data.productData, event.userInfo)
+    ctx.body = await returnUtil.success(ctx)
+    await next()
+  })
   app.router('getProductById', async (ctx, next) => {
     let product_id = event.data.product_id
+    console.log(product_id)
     ctx.data = await _productImg(product.getProductById(product_id))
     ctx.body = await returnUtil.success(ctx)
     await next()
   })
-
+ 
 
   /***************************    主题商品   *****************************************/
   // 获取主题商品列表
@@ -101,6 +108,19 @@ exports.main = async (event, context) => {
     ctx.body = await returnUtil.success(ctx)
     await next()
   })
+  // 获取所有订单信息
+  app.router('getOrderListAll', async (ctx, next) => {
+    ctx.data = await order.getOrderListAll(event.userInfo)
+    ctx.body = await returnUtil.success(ctx)
+    await next()
+  })
+// 获取所有订单信息
+app.router('updateOrder', async (ctx, next) => {
+  ctx.data = await order. updateOrder(event.data.orderData)
+  ctx.body = await returnUtil.success(ctx)
+  await next()
+})
+ 
 
 
   /***************************    测试   *****************************************/
@@ -120,12 +140,6 @@ exports.main = async (event, context) => {
     ctx.body = await returnUtil.success(ctx);
     await next();
   })
-
-
-
-
-
-
   // 轮播图片地址拼接
   function _bannerItem(data) {
     return new Promise((resolve, reject) => {

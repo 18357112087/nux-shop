@@ -5,6 +5,7 @@
   </view>
   <view class='product-name'>
     <text>{{product.product_name}}</text>
+    <text class='discount-price'>￥{{product.product_sell_price}}</text>
   </view>
   
 </view>

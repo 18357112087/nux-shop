@@ -1,5 +1,5 @@
 // pages/product/product.js
-import {  ProductModel } from '../../models/productModel.js'
+import {  ProductModel } from '../../models/ProductModel.js'
 import { CartModel } from '../../models/CartModel.js'
 let productModel = new ProductModel()
 let cartmodel = new CartModel()
@@ -10,7 +10,7 @@ Page({
    */
   data: {
     currentTab: 0,      // tab选项卡
-    product:''
+    product:{'product_img':'../../images/temp/category.png'}
   },
 
   /**
@@ -77,11 +77,21 @@ Page({
     })
   },
   _init:function(product_id){
+    var that = this
     // 获取商品信息
     productModel.getProductById(product_id,res=>{
-      this.setData({
+      console.log(res)
+      // res.result.data.data.forEach(temp=>{
+      //   console.log(temp)
+      //   temp.product_img = temp.product_img.replace("cloud://release-prod.7265-release-prod","")
+      //   console.log(temp)
+      // })
+      res.result.data.data.product_img = res.result.data.data.product_img.replace("cloud://release-prod.7265-release-prod","")
+      that.setData({
         product:res.result.data.data
       })
+      
+      console.log('product img',that.data.product.product_img)
     })
   },
   // 购物车

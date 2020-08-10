@@ -6,6 +6,8 @@ module.exports = {
     product_price: true,
     product_sell_price: true,
     product_stock: true,
-    product_description:true
+    product_description:true,
+    product_status:true,
+    category_type:true
   }
 }

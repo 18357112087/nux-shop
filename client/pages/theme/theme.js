@@ -1,5 +1,5 @@
 // pages/theme/theme.js
-import {  ProductModel } from '../../models/productModel.js'
+import {  ProductModel } from '../../models/ProductModel.js'
 let productModel = new ProductModel();
 Page({
 
@@ -66,7 +66,9 @@ Page({
 
   },
   _init:function(theme_type){
+    console.log('theme_type',theme_type)
     productModel.getThemeProduct(theme_type,res=>{
+      console.log(res)
       this.setData({
         products : res.result.data.data
       })
